@@ -1,6 +1,13 @@
 import configPromise from "@payload-config";
 import { getPayload } from "payload";
 
+/**
+ * Renders the homepage and fetches categories from Payload CMS.
+ *
+ * Also logs the retrieved categories to the server console.
+ *
+ * @returns The homepage JSX with the fetched `categories` rendered as JSON.
+ */
 export default async function Home() {
   const payload = await getPayload({
     config: configPromise,
