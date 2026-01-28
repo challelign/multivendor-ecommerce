@@ -1,3 +1,5 @@
+import { withPayload } from "@payloadcms/next/withPayload";
+import { withPayload } from "@payloadcms/next/withPayload";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -5,4 +7,4 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
 };
 
-export default nextConfig;
+export default withPayload(withPayload(nextConfig));
