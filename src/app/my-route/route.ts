@@ -1,7 +1,7 @@
 import configPromise from "@payload-config";
 import { getPayload } from "payload";
 
-export const GET = async (request: Request) => {
+export async function GET(request: Request) {
   const payload = await getPayload({
     config: configPromise,
   });
@@ -11,7 +11,8 @@ export const GET = async (request: Request) => {
     depth: 2,
   });
 
+  console.log(categories);
   return Response.json({
     categories,
   });
-};
+}
