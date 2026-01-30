@@ -57,7 +57,7 @@ export const Categories = ({ data }: Props) => {
 
       setVisibleCount(visible);
     };
-
+    calculateVisible(); // adde by coderabit suggestion
     const resizeObserver = new ResizeObserver(calculateVisible);
 
     if (containerRef.current) {
@@ -65,7 +65,7 @@ export const Categories = ({ data }: Props) => {
     }
 
     return () => resizeObserver.disconnect();
-  }, [data.length]);
+  }, [data.length, data]);
 
   return (
     <div className="relative w-full">

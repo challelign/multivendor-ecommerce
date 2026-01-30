@@ -141,6 +141,12 @@ const seed = async () => {
   const payload = await getPayload({
     config: configPromise,
   });
+  // Clear existing categories before seeding , added by coderabit suggestion
+  await payload.delete({
+    collection: "categories",
+    where: {},
+  });
+
   for (const category of categories) {
     const parentCategory = await payload.create({
       collection: "categories",

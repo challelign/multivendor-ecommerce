@@ -33,8 +33,12 @@ export const SearchInput = ({ disable, data }: Props) => {
         variant="elevated"
         className="h-12 shrink-0 flex lg:hidden"
         onClick={() => setIsSidebarOpen(true)}
+        /* added bu coderabit suggestion */
+        aria-label="Open categories"
       >
         <ListFilterIcon />
+        {/* added bu coderabit suggestion */}
+        <span className="sr-only">Open categories</span>
       </Button>
     </div>
   );
