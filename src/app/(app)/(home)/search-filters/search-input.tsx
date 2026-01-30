@@ -1,14 +1,25 @@
+"use client";
 import { Input } from "@/components/ui/input";
-import { SearchIcon } from "lucide-react";
-import React from "react";
+import { ListFilterIcon, SearchIcon } from "lucide-react";
+import { CategoriesSidebar } from "./categories-sidebar";
+import { CustomCategory } from "../types";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   disable?: boolean;
+  data: CustomCategory[];
 }
 
-export const SearchInput = ({ disable }: Props) => {
+export const SearchInput = ({ disable, data }: Props) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   return (
     <div className="flex items-center gap-2 w-full">
+      <CategoriesSidebar
+        open={isSidebarOpen}
+        onOpenChange={setIsSidebarOpen}
+        data={data}
+      />
       <div className="relative w-full">
         <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-neutral-500" />
         <Input
@@ -17,7 +28,18 @@ export const SearchInput = ({ disable }: Props) => {
           disabled={disable}
         />
       </div>
-      {/* TODO: add categories view all button */}
+      {/* add categories view all button */}
+      <Button
+        variant="elevated"
+        className="h-12 shrink-0 flex lg:hidden"
+        onClick={() => setIsSidebarOpen(true)}
+        /* added bu coderabit suggestion */
+        aria-label="Open categories"
+      >
+        <ListFilterIcon />
+        {/* added bu coderabit suggestion */}
+        <span className="sr-only">Open categories</span>
+      </Button>
     </div>
   );
 };
