@@ -14,6 +14,18 @@ pnpm dev
 bun dev
 ```
 
+# pnpm run db:seed
+
+Install:
+pnpm add -D ts-node typescript
+"db:seed": "ts-node src/seed.ts"
+
+or
+
+# pnpm run db:seed
+
+"db:seed": "bun run src/seed.ts"
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
