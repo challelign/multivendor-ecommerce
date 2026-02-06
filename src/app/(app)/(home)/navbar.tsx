@@ -70,7 +70,16 @@ export const Navbar = () => {
           </NavbarItem>
         ))}
       </div>
-
+      <div className="flex lg:hidden items-center justify-center">
+        <Button
+          variant="ghost"
+          className="size-12 border-transparent bg-white"
+          aria-label="Open menu"
+          onClick={() => setIsSidebarOpen(true)}
+        >
+          <MenuIcon />
+        </Button>
+      </div>
       {session.data?.user ? (
         <Button
           asChild
@@ -99,17 +108,6 @@ export const Navbar = () => {
               <Link prefetch href="/sign-up">
                 Start Selling
               </Link>
-            </Button>
-          </div>
-
-          <div className="flex lg:hidden items-center justify-center">
-            <Button
-              variant="ghost"
-              className="size-12 border-transparent bg-white"
-              aria-label="Open menu"
-              onClick={() => setIsSidebarOpen(true)}
-            >
-              <MenuIcon />
             </Button>
           </div>
         </>
