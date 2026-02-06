@@ -7,6 +7,8 @@ import { usePathname } from "next/navigation";
 import { ReactNode, useState } from "react";
 import NavbarSidebar from "./navbar-sidebar";
 import { MenuIcon } from "lucide-react";
+import { useTRPC } from "@/trpc/client";
+import { useQuery } from "@tanstack/react-query";
 
 interface NavbarItemProps {
   href: string;
@@ -42,6 +44,8 @@ const navbarItems = [
 export const Navbar = () => {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const trpc = useTRPC();
+  const session = useQuery(trpc.auth.session.queryOptions());
   return (
     <nav className="flex h-20 border-b justify-between font-medium bg-white">
       <Link href="/" className="pl-6 flex items-center">
@@ -67,33 +71,49 @@ export const Navbar = () => {
         ))}
       </div>
 
-      <div className="hidden lg:flex">
-        <Button
-          asChild
-          variant="secondary"
-          className="border-l border-t-0 border-b-0 border-r-0 px-12 h-full rounded-none bg-white hover:bg-pink-400 transition-colors text-lg  "
-        >
-          <Link href="/sign-in"> Login</Link>
-        </Button>
+      {session.data?.user ? (
         <Button
           asChild
           variant="outline"
           className="border-l border-t-0 border-b-0 border-r-0 px-12 h-full rounded-none bg-black hover:bg-pink-400 transition-colors text-lg text-white hover:text-white  "
         >
-          <Link href="/sign-up"> Start Selling</Link>
+          <Link href="/admin"> Dashboard</Link>
         </Button>
-      </div>
+      ) : (
+        <>
+          <div className="hidden lg:flex">
+            <Button
+              asChild
+              variant="secondary"
+              className="border-l border-t-0 border-b-0 border-r-0 px-12 h-full rounded-none bg-white hover:bg-pink-400 transition-colors text-lg  "
+            >
+              <Link prefetch href="/sign-in">
+                Login
+              </Link>
+            </Button>
+            <Button
+              asChild
+              variant="outline"
+              className="border-l border-t-0 border-b-0 border-r-0 px-12 h-full rounded-none bg-black hover:bg-pink-400 transition-colors text-lg text-white hover:text-white  "
+            >
+              <Link prefetch href="/sign-up">
+                Start Selling
+              </Link>
+            </Button>
+          </div>
 
-      <div className="flex lg:hidden items-center justify-center">
-        <Button
-          variant="ghost"
-          className="size-12 border-transparent bg-white"
-          aria-label="Open menu"
-          onClick={() => setIsSidebarOpen(true)}
-        >
-          <MenuIcon />
-        </Button>
-      </div>
+          <div className="flex lg:hidden items-center justify-center">
+            <Button
+              variant="ghost"
+              className="size-12 border-transparent bg-white"
+              aria-label="Open menu"
+              onClick={() => setIsSidebarOpen(true)}
+            >
+              <MenuIcon />
+            </Button>
+          </div>
+        </>
+      )}
     </nav>
   );
 };
