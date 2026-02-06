@@ -4,7 +4,7 @@ import { Category } from "@/payload-types";
 import { getPayload } from "payload";
 import configPromise from "@payload-config";
 
-export const categoriesProcedures = createTRPCRouter({
+export const categoriesRouter = createTRPCRouter({
   getMany: baseProcedure.query(async ({ ctx }) => {
     //   getMany: baseProcedure.query(async () => {
     // const payload = await getPayload({
