@@ -5,10 +5,10 @@ import { Poppins } from "next/font/google";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ReactNode, useState } from "react";
-import NavbarSidebar from "./navbar-sidebar";
 import { MenuIcon } from "lucide-react";
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
+import NavbarSidebar from "./navbar-sidebar";
 
 interface NavbarItemProps {
   href: string;
