@@ -34,7 +34,7 @@ export const categoriesRouter = createTRPCRouter({
       })),
     }));
 
-    console.log("[formatedData]", formatedData);
+    // console.log("[formatedData]", formatedData);
 
     return formatedData;
   }),
