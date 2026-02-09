@@ -16,14 +16,42 @@ export const productsRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const where: Where = {};
 
+      // if (input.minPrice) {
+      //   where["price"] = {
+      //     greater_than_equal: input.minPrice,
+      //   };
+      // }
+
+      // if (input.maxPrice) {
+      //   where["price"] = {
+      //     less_than_equal: input.maxPrice,
+      //   };
+      // }
+
+      /*
+      const priceFilter: Record<string, unknown> = {};
       if (input.minPrice) {
-        where["price"] = {
+        priceFilter.greater_than_equal = input.minPrice;
+      }
+      if (input.maxPrice) {
+        priceFilter.less_than_equal = input.maxPrice;
+      }
+      if (Object.keys(priceFilter).length > 0) {
+        where["price"] = priceFilter;
+      }
+      */
+      if (input.minPrice && input.maxPrice) {
+        where.price = {
+          greater_than_equal: input.minPrice,
+          less_than_equal: input.maxPrice,
+        };
+      } else if (input.minPrice) {
+        where.price = {
           greater_than_equal: input.minPrice,
         };
-      }
-
-      if (input.maxPrice) {
-        where["price"] = {
+      } else if (input.maxPrice) {
+        where.price = {
+          ...where.price,
           less_than_equal: input.maxPrice,
         };
       }
