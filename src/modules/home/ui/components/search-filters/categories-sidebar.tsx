@@ -10,11 +10,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import {
-  CategoriesGetManyOutputSingle,
-  CategoriesSubcategories,
-  CategoryItem,
-} from "@/modules/categories/types";
+import { CategoriesGetManyOutput } from "@/modules/categories/types";
 
 interface Props {
   open: boolean;
@@ -28,9 +24,10 @@ export const CategoriesSidebar = ({ open, onOpenChange }: Props) => {
   const { data } = useSuspenseQuery(trpc.categories.getMany.queryOptions());
 
   const [parentCategories, setParentCategories] =
-    useState<CategoriesSubcategories | null>(null);
-  const [selectedCategory, setSelectedCategory] =
-    useState<CategoriesGetManyOutputSingle | null>(null);
+    useState<CategoriesGetManyOutput | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<
+    CategoriesGetManyOutput[1] | null
+  >(null);
 
   // If we have parent categories show those , otherwise show root categories
   const currentCategories = parentCategories ?? data ?? [];
@@ -40,12 +37,9 @@ export const CategoriesSidebar = ({ open, onOpenChange }: Props) => {
     onOpenChange(open);
   };
 
-  //  const handleCategoryClick = (category: CategoriesGetManyOutput[1]) => {
-
-  const handleCategoryClick = (category: CategoryItem) => {
+  const handleCategoryClick = (category: CategoriesGetManyOutput[1]) => {
     if (category.subcategories && category.subcategories.length > 0) {
-      // setParentCategories(category.subcategories as CategoriesGetManyOutput);
-      setParentCategories(category.subcategories);
+      setParentCategories(category.subcategories as CategoriesGetManyOutput);
       setSelectedCategory(category);
     } else {
       // This is a leaf category (no subcategories)
