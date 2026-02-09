@@ -30,7 +30,7 @@ export const categoriesRouter = createTRPCRouter({
         // So we need to spread it to get the actual subcategories
         // Because of "depth:1" we are confident "doc" will be a type of "Category"
         ...(doc as Category),
-        subcategories: undefined,
+        // subcategories: undefined,
       })),
     }));
 

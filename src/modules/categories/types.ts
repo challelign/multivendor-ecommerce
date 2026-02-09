@@ -10,8 +10,3 @@ export type CategoriesGetManyOutputSingle = CategoriesGetManyOutput[0];
 export type CategoriesSubcategories = NonNullable<
   CategoriesGetManyOutputSingle["subcategories"]
 >;
-
-// Union type for both root categories and subcategories
-export type CategoryItem =
-  | CategoriesGetManyOutputSingle
-  | CategoriesSubcategories[0];
