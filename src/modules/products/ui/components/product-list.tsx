@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
+import { useProductFilters } from "@/modules/products/hooks/use-product-filters";
 
 interface Props {
   category?: string;
@@ -11,9 +12,11 @@ interface Props {
 const narrowView = false;
 
 export const ProductList = ({ category }: Props) => {
+  const [filters] = useProductFilters();
+
   const trpc = useTRPC();
   const { data } = useSuspenseQuery(
-    trpc.products.getMany.queryOptions({ category }),
+    trpc.products.getMany.queryOptions({ ...filters, category }),
   );
   return (
     <div
@@ -27,6 +30,10 @@ export const ProductList = ({ category }: Props) => {
           <p>{product.name}</p>
           <p>{product.description}</p>
           <p>{product.price}</p>
+
+          {product.tags?.map((tag) => (
+            <p key={tag.id}>{tag.name}</p>
+          ))}
         </div>
       ))}
     </div>
