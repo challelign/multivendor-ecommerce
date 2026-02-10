@@ -1,7 +1,8 @@
 import { createTRPCRouter, baseProcedure } from "@/trpc/init";
 import { z } from "zod";
-import type { Where } from "payload";
+import type { Sort, Where } from "payload";
 import { Category } from "@/payload-types";
+import { sortValues } from "../search-params"; // to import sort values from search-params.ts nuqs/server
 
 export const productsRouter = createTRPCRouter({
   getMany: baseProcedure
@@ -10,6 +11,8 @@ export const productsRouter = createTRPCRouter({
         category: z.string().nullable().optional(),
         minPrice: z.string().nullable().optional(),
         maxPrice: z.string().nullable().optional(),
+        tags: z.array(z.string()).nullable().optional(), // Optional array of strings
+        sort: z.enum(sortValues).default("curated"),
       }),
     )
 
@@ -40,6 +43,18 @@ export const productsRouter = createTRPCRouter({
         where["price"] = priceFilter;
       }
       */
+
+      // for sort filter
+      let sort: Sort = "-createdAt";
+
+      if (input.sort === "curated") {
+        sort = "-createdAt";
+      } else if (input.sort === "hot_and_new") {
+        sort = "name";
+      } else if (input.sort === "trending") {
+        sort = "+createdAt";
+      }
+      // for price filter
       if (input.minPrice && input.maxPrice) {
         where.price = {
           greater_than_equal: input.minPrice,
@@ -56,6 +71,7 @@ export const productsRouter = createTRPCRouter({
         };
       }
 
+      // for category filter
       if (input.category) {
         const categoriesData = await ctx.db.find({
           collection: "categories",
@@ -99,6 +115,12 @@ export const productsRouter = createTRPCRouter({
         }
       }
 
+      // for tags filter
+      if (input.tags?.length) {
+        where["tags.name"] = {
+          in: input.tags,
+        };
+      }
       const data = await ctx.db.find({
         collection: "products",
         depth: 1, // Populate "category"& "image"
