@@ -16,4 +16,4 @@ const params = {
   sort: parseAsStringLiteral(sortValues).withDefault("curated"),
 };
 
-export const useProductFilters = createLoader(params);
+export const loadProductFilters = createLoader(params);

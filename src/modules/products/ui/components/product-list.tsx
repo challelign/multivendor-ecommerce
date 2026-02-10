@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
-import { useProductFilters } from "../../hooks/use-product-filters";
+import { useProductFilters } from "@/modules/products/hooks/use-product-filters";
 
 interface Props {
   category?: string;

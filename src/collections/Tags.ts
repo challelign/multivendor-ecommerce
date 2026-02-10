@@ -14,6 +14,10 @@ export const Tags: CollectionConfig = {
       required: true,
       unique: true,
     },
+    /**
+     * Bidirectional relationship risks data inconsistency.
+Both Tags.products and Products.tags (in src/collections/Products.ts) independently store the many-to-many relationship. Payload does not automatically synchronize these — updating one side won't reflect on the other. This will lead to stale/conflicting data.
+     */
     {
       name: "products",
       type: "relationship",

@@ -6,7 +6,6 @@ import { useState } from "react";
 import { PriceFilters } from "./price-filters";
 import { useProductFilters } from "@/modules/products/hooks/use-product-filters";
 import { TagsFilter } from "./tags-filter";
-import { Arapey } from "next/font/google";
 
 interface ProductFiltersProps {
   title: string;

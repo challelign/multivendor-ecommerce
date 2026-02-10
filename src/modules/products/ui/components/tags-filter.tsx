@@ -38,10 +38,10 @@ export const TagsFilter = ({ value, onChange }: TagsFilterProps) => {
           <LoaderIcon className="size-4 animate-spin" />
         </div>
       ) : (
-        data?.pages.map((page) =>
-          page.docs.map((tag) => (
+        data?.pages.map((page, pageIndex) =>
+          page.docs.map((tag, tagIndex) => (
             <div
-              key={tag.id}
+              key={`${tag.id}-${pageIndex}-${tagIndex}`}
               className="flex items-center justify-between cursor-pointer"
             >
               <p className="font-medium">{tag.name}</p>
