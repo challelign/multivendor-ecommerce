@@ -1,5 +1,6 @@
 import { getPayload } from "payload";
 import configPromise from "@payload-config";
+import { username } from "payload/shared";
 
 const categories = [
   {
@@ -141,6 +142,29 @@ const seed = async () => {
   const payload = await getPayload({
     config: configPromise,
   });
+
+  // Creating tenant
+  const adminTenat = await payload.create({
+    collection: "tenants",
+    data: {
+      name: "admin",
+      slug: "admin",
+      stripeAccountId: "admin",
+    },
+  });
+
+  // Create admin user
+  await payload.create({
+    collection: "users",
+    data: {
+      email: "admin@demo.com",
+      password: "demo",
+      roles: ["super-admin"],
+      username: "admin",
+      tenants: [{ tenant: adminTenat.id }],
+    },
+  });
+
   // Clear existing categories before seeding , added by coderabit suggestion
   await payload.delete({
     collection: "categories",
