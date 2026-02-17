@@ -11,10 +11,12 @@ import { InboxIcon } from "lucide-react";
 
 interface Props {
   category?: string;
+  tenantSlug?: string;
+  narrowView?: boolean;
 }
 const narrowView = false;
 
-export const ProductList = ({ category }: Props) => {
+export const ProductList = ({ category, tenantSlug, narrowView }: Props) => {
   const [filters] = useProductFilters();
 
   const trpc = useTRPC();
@@ -24,6 +26,7 @@ export const ProductList = ({ category }: Props) => {
         {
           ...filters,
           category,
+          tenantSlug,
           limit: DEFAULT_LIMIT,
         },
         {
@@ -48,7 +51,7 @@ export const ProductList = ({ category }: Props) => {
       <div
         className={cn(
           "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4",
-          // narrowView && "lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3",
+          narrowView && "lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3",
         )}
       >
         {/* {data?.docs.map((product) => (
@@ -73,8 +76,10 @@ export const ProductList = ({ category }: Props) => {
               id={product.id}
               name={product.name}
               imageUrl={product.image?.url}
-              authorUsername="challelign"
-              authorImageUrl={undefined}
+              // authorUsername={product.tenant.name}
+              // authorImageUrl={product.tenant?.image?.url}
+              tenantSlug={product.tenant.slug}
+              tenatImageUrl={product.tenant?.image?.url}
               reviewRating={3}
               reviewCount={5}
               price={product.price}
@@ -97,7 +102,7 @@ export const ProductList = ({ category }: Props) => {
   );
 };
 
-export const ProductListSkeleton = ({}: Props) => {
+export const ProductListSkeleton = ({ narrowView }: Props) => {
   return (
     <div
       className={cn(

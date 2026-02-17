@@ -1,7 +1,7 @@
 import { createTRPCRouter, baseProcedure } from "@/trpc/init";
 import { z } from "zod";
 import type { Sort, Where } from "payload";
-import { Category, Media } from "@/payload-types";
+import { Category, Media, Tenant } from "@/payload-types";
 import { sortValues } from "../search-params"; // to import sort values from search-params.ts nuqs/server
 import { DEFAULT_LIMIT } from "@/constants";
 
@@ -16,6 +16,7 @@ export const productsRouter = createTRPCRouter({
         maxPrice: z.string().nullable().optional(),
         tags: z.array(z.string()).nullable().optional(), // Optional array of strings
         sort: z.enum(sortValues).default("curated"),
+        tenantSlug: z.string().nullable().optional(),
       }),
     )
 
@@ -74,6 +75,12 @@ export const productsRouter = createTRPCRouter({
         };
       }
 
+      if (input.tenantSlug) {
+        where["tenant.slug"] = {
+          equals: input.tenantSlug,
+        };
+      }
+
       // for category filter
       if (input.category) {
         const categoriesData = await ctx.db.find({
@@ -126,18 +133,21 @@ export const productsRouter = createTRPCRouter({
       }
       const data = await ctx.db.find({
         collection: "products",
-        depth: 1, // Populate "category"& "image"
+        // depth: 1, // Populate "category"& "image","tenants"
+        depth: 2, // Populate "category"& "image","tenants" & "tenant.image"
         where,
         sort,
         page: input.cursor,
         limit: input.limit,
       });
 
+      console.log("[data]", JSON.stringify(data.docs, null, 2));
       return {
         ...data,
         docs: data.docs.map((doc) => ({
           ...doc,
           image: doc.image as Media | null,
+          tenant: doc.tenant as Tenant & { image: Media | null },
         })),
       };
     }),
