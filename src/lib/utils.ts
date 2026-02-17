@@ -21,3 +21,11 @@ export function generateTenantURL(tenantSlug: string) {
   // In production, use subdomain routing
   return `${protocol}://${tenantSlug}.${domain}`;
 }
+
+export function formatCurrency(value: number | string) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "ETB",
+    maximumFractionDigits: 0,
+  }).format(Number(value));
+}
